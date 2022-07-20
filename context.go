@@ -8,6 +8,7 @@ import (
 	"image/jpeg"
 	"image/png"
 	"io"
+	"io/fs"
 	"math"
 	"strings"
 
@@ -696,6 +697,15 @@ func (dc *Context) SetFontFace(fontFace font.Face) {
 
 func (dc *Context) LoadFontFace(path string, points float64) error {
 	face, err := LoadFontFace(path, points)
+	if err == nil {
+		dc.fontFace = face
+		dc.fontHeight = points * 72 / 96
+	}
+	return err
+}
+
+func (dc *Context) LoadFontFaceFS(fS fs.FS, path string, points float64) error {
+	face, err := LoadFontFaceFS(fS, path, points)
 	if err == nil {
 		dc.fontFace = face
 		dc.fontHeight = points * 72 / 96
